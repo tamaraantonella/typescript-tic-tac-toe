@@ -6,21 +6,33 @@ const ROW_COUNT = 3;
 const COL_COUNT = 3;
 
 type Cell = "X" | "O" | "";
-type TicTacToeBoard = [[Cell, Cell, Cell], [Cell, Cell, Cell], [Cell, Cell, Cell]]
-
-let boardState:TicTacToeBoard = [
-  ["", "", ""],
-  ["", "", ""],
-  ["", "", ""]
+type TicTacToeBoard = [
+  [Cell, Cell, Cell],
+  [Cell, Cell, Cell],
+  [Cell, Cell, Cell]
 ];
-let currentMove:"X"|"O" = "X";
 
-function createCell(row:number, col:number, content:Cell = "") {
+let boardState: TicTacToeBoard = [
+  ["", "", ""],
+  ["", "", ""],
+  ["", "", ""],
+];
+let currentMove: "X" | "O" = "X";
+
+function createCell(row: number, col: number, content: Cell = "") {
   const cell = document.createElement("button");
   cell.setAttribute("data-row", row.toString());
   cell.setAttribute("data-col", col.toString());
   cell.setAttribute("data-content", content);
   cell.classList.add("cell");
+  cell.addEventListener("click", () => {
+    if (boardState[row][col] !== "") return;
+    if (boardState[row][col] === "") {
+      boardState[row][col] = currentMove;
+      currentMove = currentMove === "X" ? "O" : "X";
+      renderBoard();
+    }
+  });
   return cell;
 }
 
@@ -51,7 +63,7 @@ function init() {
     boardState = [
       ["", "", ""],
       ["", "", ""],
-      ["", "", ""]
+      ["", "", ""],
     ];
     currentMove = "X";
     renderBoard();
